@@ -83,8 +83,6 @@ def app():
         # display the plot
         st.pyplot(fig)
 
-# display the plot based on the value of the slider
-plot_scores(iterations_slider)
 
 
     # display the plot based on the value of the slider
