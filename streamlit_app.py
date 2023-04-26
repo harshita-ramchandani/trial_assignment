@@ -1,12 +1,12 @@
 import streamlit as st
-import matplotlib
-import matplotlib.pyplot as plt
-import ipywidgets as widgets
-from ipywidgets import interact, IntSlider
 from sklearn.datasets import make_classification
 from sklearn.feature_selection import SequentialFeatureSelector
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
+import matplotlib.pyplot as plt
+# set page title
+st.set_page_config(page_title="Sequential Feature Selection")
+# generate the dataset
 X, y = make_classification(n_samples=100, n_features=20, n_informative=15,
                            n_redundant=2, n_repeated=0, n_classes=2,
                            class_sep=2.0, random_state=42)
@@ -33,7 +33,6 @@ for i in range(1, 20):
     # append the number of selected features and the corresponding score to the lists
     n_features_fwd.append(i)
     scores_fwd.append(score_fwd)
-    print(score_fwd)
     # create a new instance of the logistic regression model
     lr = LogisticRegression()
     sbs = SequentialFeatureSelector(LogisticRegression(), direction='backward', n_features_to_select=i)
@@ -46,26 +45,8 @@ for i in range(1, 20):
     # append the number of selected features and the corresponding score to the lists
     n_features_bwd.append(i)
     scores_bwd.append(score_bwd)
-#     print(score_bwd)
-    st.write(score_bwd)
-
 # define a function to plot the scores
-# def plot_scores(n):
-#     plt.plot(n_features_fwd[:n], scores_fwd[:n], label='Forward')
-#     plt.plot(n_features_bwd[:n], scores_bwd[:n], label='Backward')
-#     plt.xlabel('Number of Features')
-#     plt.ylabel('Accuracy')
-#     plt.title('Sequential Feature Selection')
-#     plt.legend()
-#     st.pyplot()
 def plot_scores(n):
-    plt.plot(n_features_fwd[:n], scores_fwd[:n], label='Forward')
-    plt.plot(n_features_bwd[:n], scores_bwd[:n], label='Backward')
-    plt.xlabel('Number of Features')
-    plt.ylabel('Accuracy')
-    plt.title('Sequential Feature Selection')
-    plt.legend()
-    st.pyplot()
     fig, ax = plt.subplots()
     ax.plot(n_features_fwd[:n], scores_fwd[:n], label='Forward')
     ax.plot(n_features_bwd[:n], scores_bwd[:n], label='Backward')
@@ -74,9 +55,10 @@ def plot_scores(n):
     ax.set_title('Sequential Feature Selection')
     ax.legend()
     st.pyplot(fig)
-
 # create a slider for the number of iterations
-iterations_slider = IntSlider(min=1, max=len(n_features_fwd), value=len(n_features_fwd), description='Iterations:')
-# use the interact function to link the slider to the plot
-interact(plot_scores, n=iterations_slider)
+iterations_slider = st.slider(min_value=1, max_value=len(n_features_fwd), value=len(n_features_fwd), step=1, label='Iterations:')
+
+# display the plot
+plot_scores(iterations_slider)
+
 st.write("hello world")
