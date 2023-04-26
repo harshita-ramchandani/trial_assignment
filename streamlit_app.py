@@ -68,18 +68,24 @@ def app():
 
     # define a function to plot the scores
     def plot_scores(n):
+        # create a figure and axis object
+        fig, ax = plt.subplots()
         # plot the scores for the forward feature selection
-        plt.plot(n_features_fwd[:n], scores_fwd[:n], label='Forward Selection')
+        ax.plot(n_features_fwd[:n], scores_fwd[:n], label='Forward Selection')
         # plot the scores for the backward feature selection
-        plt.plot(n_features_bwd[:n], scores_bwd[:n], label='Backward Elimination')
+        ax.plot(n_features_bwd[:n], scores_bwd[:n], label='Backward Elimination')
         # set the plot title and labels
-        plt.title('Sequential Feature Selection')
-        plt.xlabel('Number of Features')
-        plt.ylabel('Accuracy')
+        ax.set_title('Sequential Feature Selection')
+        ax.set_xlabel('Number of Features')
+        ax.set_ylabel('Accuracy')
         # show the legend
-        plt.legend()
+        ax.legend()
         # display the plot
-        st.pyplot()
+        st.pyplot(fig)
+
+# display the plot based on the value of the slider
+plot_scores(iterations_slider)
+
 
     # display the plot based on the value of the slider
     plot_scores(iterations_slider)
