@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 st.set_page_config(page_title="Sequential Feature Selection")
 
 # define a function to generate the data and feature selectors
-@st.cache
+@st.cache(allow_output_mutation=True)
 def generate_data_and_selectors():
     # generate the dataset
     X, y = make_classification(n_samples=100, n_features=20, n_informative=15,
@@ -68,21 +68,18 @@ def app():
 
     # define a function to plot the scores
     def plot_scores(n):
-        # create a new figure
-        fig, ax = plt.subplots()
         # plot the scores for the forward feature selection
-        ax.plot(n_features_fwd[:n], scores_fwd[:n], label='Forward Selection')
+        plt.plot(n_features_fwd[:n], scores_fwd[:n], label='Forward Selection')
         # plot the scores for the backward feature selection
-        ax.plot(n_features_bwd[:n], scores_bwd[:n], label='Backward Elimination')
+        plt.plot(n_features_bwd[:n], scores_bwd[:n], label='Backward Elimination')
         # set the plot title and labels
-        ax.set_title('Sequential Feature Selection')
-        ax.set_xlabel('Number of Features')
-        ax.set_ylabel('Accuracy')
+        plt.title('Sequential Feature Selection')
+        plt.xlabel('Number of Features')
+        plt.ylabel('Accuracy')
         # show the legend
-        ax.legend()
+        plt.legend()
         # display the plot
-        st.pyplot(fig)
-
+        st.pyplot()
 
     # display the plot based on the value of the slider
     plot_scores(iterations_slider)
